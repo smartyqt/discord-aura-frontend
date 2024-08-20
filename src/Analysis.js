@@ -16,8 +16,10 @@ const Analysis = () => {
           { userID } // Send the userID in the request body
         );
         const jsonData = response.data;
-        setData(jsonData);
-        setLoading(false);
+        setTimeout(() => {
+          setData(jsonData);
+          setLoading(false);
+        }, 1000); // Simulate a 2-second delay
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -29,8 +31,28 @@ const Analysis = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#7289DA] to-[#5865F2] text-white">
-        Loading...
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#7289DA] to-[#5865F2] text-white">
+        <svg
+          className="animate-spin h-10 w-10 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zM12 20a8 8 0 100-16v4a4 4 0 110 8v4z"
+          ></path>
+        </svg>
+        <p className="mt-4 text-xl">analyzing aura</p>
       </div>
     );
   }
@@ -38,14 +60,19 @@ const Analysis = () => {
   return (
     <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-[#7289DA] to-[#5865F2] text-white p-4">
       {data ? (
-        <div className="max-w-2xl w-full bg-gray-800 p-6 rounded-lg shadow-lg">
-          {/* User Info */}
+        <div className="max-w-md w-full bg-gray-800 p-6 rounded-lg shadow-lg">
           <div className="flex flex-col items-center">
+            <img
+              src={data.userData.banner}
+              alt="User Banner"
+              className="w-full h-32 object-cover rounded-lg mb-4"
+            />
             <img
               src={data.userData.avatar}
               alt="User Avatar"
               className="w-24 h-24 rounded-full border-4 border-red-400 mb-4"
             />
+
             <h1 className="text-3xl font-bold mb-2">
               @{data.userData.username}
             </h1>
@@ -54,50 +81,10 @@ const Analysis = () => {
             </p>
           </div>
 
-          {/* Aura Analysis */}
-          <div className="mt-6">
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-lg font-semibold">Aura Points:</span>
-              <span className="text-lg font-bold text-red-400">
-                {data.aura.totalAuraScore}
-              </span>
-            </div>
-
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-lg font-semibold">Name Score:</span>
-              <span className="text-lg font-bold text-red-400">
-                {data.aura.nameScore}%
-              </span>
-            </div>
-
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-lg font-semibold">Bio Score:</span>
-              <span className="text-lg font-bold text-red-400">
-                {data.aura.bioScore}%
-              </span>
-            </div>
-
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-lg font-semibold">Follow Ratio:</span>
-              <span className="text-lg font-bold text-red-400">
-                {data.aura.followRatioScore}%
-              </span>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <span className="text-lg font-semibold">Algo Pull:</span>
-              <span className="text-lg font-bold text-red-400">
-                {data.aura.algoPullScore}%
-              </span>
-            </div>
-          </div>
-
-          {/* Overall Summary */}
-          <div className="mt-8 text-center">
-            <h3 className="text-2xl font-bold">Overall Aura Rating:</h3>
-            <p className="text-3xl font-bold text-red-400">
-              {data.aura.overallScore}
-            </p>
+          {/* Displaying aura results */}
+          <div className="flex flex-col">
+            <h3 className="text-xl font-semibold">Name</h3>
+            <p>{data.userData.name}</p>
           </div>
         </div>
       ) : (
